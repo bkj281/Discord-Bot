@@ -12,7 +12,6 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
 client = commands.Bot('>')
-client.remove_command("help")
 
 cogs = [music]
 
@@ -33,6 +32,8 @@ for i in range(len(cogs3)):
 async def on_ready():
 	print(f'{client.user} has connected to Discord!')
 	
+	await client.change_presence(status=discord.Status.do_not_disturb, activity=discord.Game('Let\'s Enjoy'))
+
 	for guild in client.guilds:
 		print(guild.name)
 		# members = '\n - '.join([member.name for member in guild.members])
