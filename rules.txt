@@ -1,0 +1,10 @@
+:one:  Follow General Discord Community Guidelines - https://discord.com/guidelines
+:two: Follow the Discord Terms of Service - https://discord.com/terms
+:three: Treat others with respect. (:warning:)
+:four: No user threats/harassments. (:red_circle:)
+:five: Elitism/Gate-Keeping is not acceptable. (:warning:)
+:six: No doxing, respect user's privacy. (:red_circle:)
+:seven: No spams. (:warning:)
+:eight: No inappropriate NSFW messages/images. (:red_circle:)
+:nine: No political discussions. (:warning:)
+:keycap_ten: Keep discussions relevant to channel topics and guidelines. (:warning:)
