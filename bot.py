@@ -14,6 +14,16 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 client = commands.Bot('>')
 client.remove_command("help")
 
+@client.group(invoke_without_command=True)
+async def help(ctx):
+	em = discord.Embed(title="Help", description="Use >Help <command> for More Information",
+	                         color=discord.Color.orange())
+
+	em.add_field(name="Moderation", value="kick, ban, mute, whois")
+	em.add_field(name="Game", value="tictactoe, flip_coin")
+	em.add_field(name="Music", value="play, pause, stop, resume, join, leave")
+	await ctx.send(embed=em)
+
 cogs = [music]
 
 for i in range(len(cogs)):
@@ -29,9 +39,12 @@ cogs3 = [rule]
 for i in range(len(cogs3)):
   cogs3[i].setup(client)
 
+
 @client.event
 async def on_ready():
 	print(f'{client.user} has connected to Discord!')
+
+	await client.change_presence(status=discord.Status.idle, activity=discord.Game('Let\'s Enjoy'))
 	
 	for guild in client.guilds:
 		print(guild.name)
@@ -150,19 +163,18 @@ async def place(ctx, pos: int):
           else:
             line += " " + board[x]
 
-            checkWinner(winningConditions, mark)
-            print(count)
-            if gameOver == True:
-              await ctx.send(mark + " wins!")
-            elif count >= 9:
-              gameOver = True
-              await ctx.send("It's a tie!")
-
-            # switch turns
-            if turn == player1:
-              turn = player2
-            elif turn == player2:
-              turn = player1
+        checkWinner(winningConditions, mark)
+        print(count)
+        if gameOver == True:
+          await ctx.send(mark + " wins!")
+        elif count >= 9:
+          gameOver = True
+          await ctx.send("It's a tie!")
+        # switch turns
+        if turn == player1:
+          turn = player2
+        elif turn == player2:
+          turn = player1
       else:
         await ctx.send("Be sure to choose an integer between 1 and 9 (inclusive) and an unmarked tile.")
     else:
