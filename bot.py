@@ -2,6 +2,9 @@ import os
 import discord
 import random
 from discord import client
+from discord import message
+from discord import channel
+from discord.colour import Color
 from dotenv import load_dotenv
 from discord.ext import commands
 import music
@@ -12,16 +15,42 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
 client = commands.Bot('>')
+client.remove_command("help")
 
 @client.group(invoke_without_command=True)
 async def help(ctx):
-	em = discord.Embed(title="Help", description="Use >Help <command> for More Information",
+	em = discord.Embed(title="Help", description="Use >help <command> for More Information",
 	                         color=discord.Color.orange())
 
 	em.add_field(name="Moderation", value="kick, ban, mute, whois")
-	em.add_field(name="Game", value="tictactoe, flip_coin")
+	em.add_field(name="Games", value="tictactoe, flip_coin, hi")
 	em.add_field(name="Music", value="play, pause, stop, resume, join, leave")
 	await ctx.send(embed=em)
+
+@help.command()
+async def kick(ctx):
+  em = discord.Embed(title="Kick", description="Kicks a member from the guild", color=discord.Color.blue())
+  em.add_field(name="**Syntax**", value=">kick <member> [reason]")
+  await ctx.send(embed=em)
+
+
+@help.command()
+async def ban(ctx):
+  em = discord.Embed(title="Ban", description="Kicks a member from the guild", color=discord.Color.blue())
+  em.add_field(name="**Syntax**", value=">ban <member> [reason]")
+  await ctx.send(embed=em)
+
+@help.command()
+async def tictactoe(ctx):
+  em = discord.Embed(title="Tic-Tac-Toe", description="Tic-Tac-Toe Game", color=discord.Color.blurple())
+  em.add_field(name="**Syntax**", value=">tictactoe <member1> <member2>")
+  await ctx.send(embed=em)
+
+@help.command()
+async def play(ctx):
+  em = discord.Embed(title="Music", description="Music Player", color=discord.Color.dark_orange())
+  em.add_field(name="**Syntax**", value=">join \n>play <songname>")
+  await ctx.send(embed=em)
 
 cogs = [music]
 
@@ -43,8 +72,6 @@ for i in range(len(cogs3)):
 async def on_ready():
 	print(f'{client.user} has connected to Discord!')
 
-	await client.change_presence(status=discord.Status.idle, activity=discord.Game('Let\'s Enjoy'))
-	
 	await client.change_presence(status=discord.Status.do_not_disturb, activity=discord.Game('Let\'s Enjoy'))
 
 	for guild in client.guilds:
@@ -53,17 +80,24 @@ async def on_ready():
 		# print(f'Guild Members:\n - {members}')
 		for channel in guild.text_channels:
 			if str(channel) == "general":
-				await channel.send('Bot is now Online!')
+				em = discord.Embed(title="Bot is Online!", color=discord.Color.dark_gold())
+				await channel.send(embed=em)
 				await channel.send('https://tenor.com/view/thanos-im-here-brave-gif-12046780')
 
 @client.event
 async def on_message(msg):
-  filtered_words = ["sad", "unhappy"]
-  for word in filtered_words:
-    if word in msg.content:
-      await msg.delete()
-  await client.process_commands(msg)
+	filtered_words = ["sad", "unhappy", "anxiety", "depressed", "broken"]
+	ctx = msg.channel
+	for word in filtered_words:
+		if word in msg.content:
+			await msg.delete()
+			await ctx.send("Be Happy!\nStay Motivated")
+	await client.process_commands(msg)
 
+@client.event
+async def on_reaction_add(reaction, user):
+	ctx = reaction.message.channel
+	await ctx.send('{} has added {} to the message {}'.format(user.name, reaction.emoji, reaction.message.content))
 
 @client.event
 async def on_command_error(ctx, error):
@@ -115,21 +149,21 @@ async def tictactoe(ctx, p1: discord.Member, p2: discord.Member):
     # print the board
     line = ""
     for x in range(len(board)):
-        if x == 2 or x == 5 or x == 8:
-            line += " " + board[x]
-            await ctx.send(line)
-            line = ""
-        else:
-            line += " " + board[x]
+      if x == 2 or x == 5 or x == 8:
+        line += " " + board[x]
+        await ctx.send(line)
+        line = ""
+      else:
+        line += " " + board[x]
 
     # determine who goes first
     num = random.randint(1, 2)
     if num == 1:
-        turn = player1
-        await ctx.send("It is <@" + str(player1.id) + ">'s turn.")
+      turn = player1
+      await ctx.send("It is <@" + str(player1.id) + ">'s turn.")
     elif num == 2:
-        turn = player2
-        await ctx.send("It is <@" + str(player2.id) + ">'s turn.")
+      turn = player2
+      await ctx.send("It is <@" + str(player2.id) + ">'s turn.")
   else:
     await ctx.send("A game is already in progress! Finish it before starting a new one.")
 

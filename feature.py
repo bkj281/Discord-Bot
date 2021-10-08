@@ -7,8 +7,8 @@ class Feature(commands.Cog):
     self.client = client
 
   @commands.command(aliases=['c'])
-  async def clear(self, ctx, amount=2):
-      await ctx.channel.purge(limit=amount)
+  async def clear(self, ctx, amount=1):
+      await ctx.channel.purge(limit=amount+1)
 
   @commands.command()
   async def flip_coin(self, ctx):
@@ -21,7 +21,8 @@ class Feature(commands.Cog):
   @commands.command()
   async def hi(self, ctx):
     await ctx.send('https://tenor.com/view/hello-there-baby-yoda-mandolorian-hello-gif-20136589')
-    await ctx.send('How you doing?')
+    em = discord.Embed(title="Howz you doing?", color=discord.Color.dark_teal())
+    await ctx.send(embed=em)
 
   @commands.command(aliases=['k'])
   @commands.has_permissions(kick_members=True)
