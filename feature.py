@@ -8,7 +8,7 @@ class Feature(commands.Cog):
 
   @commands.command(aliases=['c'])
   async def clear(self, ctx, amount=1):
-      await ctx.channel.purge(limit=amount+1)
+    await ctx.channel.purge(limit=amount+1)
 
   @commands.command()
   async def flip_coin(self, ctx):

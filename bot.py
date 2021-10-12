@@ -2,9 +2,6 @@ import os
 import discord
 import random
 from discord import client
-from discord import message
-from discord import channel
-from discord.colour import Color
 from dotenv import load_dotenv
 from discord.ext import commands
 import music
@@ -36,7 +33,7 @@ async def kick(ctx):
 
 @help.command()
 async def ban(ctx):
-  em = discord.Embed(title="Ban", description="Kicks a member from the guild", color=discord.Color.blue())
+  em = discord.Embed(title="Ban", description="Bans a member from the guild", color=discord.Color.blue())
   em.add_field(name="**Syntax**", value=">ban <member> [reason]")
   await ctx.send(embed=em)
 
